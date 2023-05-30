@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario{
+  id String @id @default(uuid())
+  nome String
+  email String
+  senha String
+  criado_em DateTime? @default(now())
+  modificado_em DateTime? @default(now())
+
+  @@map("usuarios")
+
+}
+
+model Categoria{
+  id String @id @default(uuid())
+  nome String
+  criado_em DateTime? @default(now())
+  modificado_em DateTime @default(now())
+
+  @@map("categorias")
+  produtos Produto[]
+}
+
+model Produto{
+  id String @id @default(uuid())
+  nome String
+  preco String
+  descricao String
+  banner String
+  criado_em DateTime? @default(now())
+  modificado_em DateTime @default(now())
+
+  categorias Categoria @relation(fields: [id_categoria], references: [id])
+
+  @@map("produtos")
+  id_categoria String
+  items Item[]
+
+}
+
+model Pedido{
+  id String @id @default( uuid())
+  mesa Int
+  status Boolean @default(false)
+  rascunho Boolean @default(true)
+  nome String?
+
+  criado_em DateTime? @default(now())
+  modificado_em DateTime @default(now())
+
+  @@map("pedidos")
+  items Item[]
+}
+
+model Item{
+  id String @id @default(uuid())
+  quantidade Int
+
+  criado_em DateTime? @default(now())
+  modificado_em DateTime @default(now())
+
+  pedidos Pedido @relation(fields: [id_pedido], references: [id])
+  produtos Produto @relation(fields: [id_produto], references: [id])
+
+  @@map("items")
+  id_pedido String
+  id_produto String
+}
