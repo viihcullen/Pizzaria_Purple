@@ -18,6 +18,7 @@ import { RemoveItemController } from "./controllers/order/RemoveItemController";
 import { SendOrderController } from "./controllers/order/SendOrderController";
 import { ListLastOrderController } from "./controllers/order/ListLastOrderController";
 import { DetailOrderController } from "./controllers/order/DetailOrderController";
+import { FinishOrderController } from "./controllers/order/FinishOrderController";
 
 const router = Router(); //crio uma instância do elemento Router
 
@@ -49,5 +50,6 @@ const upload = multer(uploadConfig.upload("./tmp"));
     router.delete('/deleteitem', isAuthenticaded, new RemoveItemController().handle);
     router.get('/order/list', isAuthenticaded, new ListLastOrderController().handle);
     router.get('/order/detail', isAuthenticaded, new DetailOrderController().handle);
+    router.put('/order/finish', isAuthenticaded, new FinishOrderController().handle);
 
 export {router}; // exportação do objeto router para acesso de outros arquivos
